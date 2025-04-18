@@ -6,14 +6,16 @@
     <title>Trennbare Verben - German Separable Verbs</title>
     <style>
         :root {
-            --bg-color: #1a1a1a;
-            --text-color: #f0f0f0;
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
             --primary-color: #4a6fa5;
             --secondary-color: #3a5a78;
-            --card-bg: #2d2d2d;
+            --card-bg: #242424;
             --button-hover: #5a8fd8;
             --mode-toggle-bg: #333;
             --mode-toggle-circle: #f0f0f0;
+            --example-bg: #2d2d2d;
+            --highlight-color: #ffcc00;
         }
 
         .light-mode {
@@ -25,6 +27,8 @@
             --button-hover: #3a5a78;
             --mode-toggle-bg: #ddd;
             --mode-toggle-circle: #333;
+            --example-bg: #f0f0f0;
+            --highlight-color: #ff9900;
         }
 
         body {
@@ -34,6 +38,7 @@
             margin: 0;
             padding: 0;
             transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
         }
 
         .container {
@@ -149,22 +154,24 @@
             text-align: center;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .stem-card:hover {
             transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .stem-title {
             font-weight: bold;
             margin-bottom: 5px;
             color: var(--primary-color);
+            font-size: 1.1rem;
         }
 
         .stem-meaning {
             font-size: 0.9em;
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
         .prefix-list {
@@ -174,25 +181,46 @@
 
         .prefix-item {
             background-color: var(--card-bg);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             padding: 15px;
             border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .prefix-item:hover {
+            transform: translateX(5px);
         }
 
         .prefix-word {
             font-weight: bold;
             color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
         }
 
         .meaning-display {
             display: none;
             margin-top: 10px;
-            padding: 10px;
-            background-color: var(--secondary-color);
+            padding: 12px;
+            background-color: var(--example-bg);
             border-radius: 5px;
-            color: white;
+            color: var(--text-color);
+        }
+
+        .example {
+            font-style: italic;
+            margin-top: 8px;
+            padding: 8px;
+            background-color: var(--example-bg);
+            border-left: 3px solid var(--highlight-color);
+        }
+
+        .example-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--highlight-color);
         }
 
         .back-button {
@@ -225,6 +253,10 @@
             
             .stems-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            h1 {
+                font-size: 1.3rem;
             }
         }
     </style>
@@ -262,7 +294,7 @@
     </div>
 
     <script>
-        // App data
+        // App data with example sentences
         const appData = {
             en: {
                 title: "Trennbare Verben\nGerman Separable Verbs",
@@ -276,87 +308,231 @@
                     machen: {
                         baseMeaning: "to make/do",
                         prefixes: {
-                            abmachen: "to remove, to agree on",
-                            anmachen: "to turn on (device)",
-                            aufmachen: "to open",
-                            ausmachen: "to turn off, to matter",
-                            zumachen: "to close"
+                            abmachen: {
+                                meaning: "to remove, to agree on",
+                                example: "Kannst du das Bild abmachen?",
+                                translation: "Can you remove the picture?"
+                            },
+                            anmachen: {
+                                meaning: "to turn on (device)",
+                                example: "Mach bitte das Licht an.",
+                                translation: "Please turn on the light."
+                            },
+                            aufmachen: {
+                                meaning: "to open",
+                                example: "Ich mache das Fenster auf.",
+                                translation: "I'm opening the window."
+                            },
+                            ausmachen: {
+                                meaning: "to turn off, to matter",
+                                example: "Mach den Fernseher aus, bitte.",
+                                translation: "Turn off the TV, please."
+                            },
+                            zumachen: {
+                                meaning: "to close",
+                                example: "Mach die Tür zu, es zieht.",
+                                translation: "Close the door, there's a draft."
+                            }
                         }
                     },
                     stehen: {
                         baseMeaning: "to stand",
                         prefixes: {
-                            aufstehen: "to get up",
-                            beistehen: "to support",
-                            entstehen: "to arise, to form",
-                            verstehen: "to understand (inseparable)"
+                            aufstehen: {
+                                meaning: "to get up",
+                                example: "Ich stehe um 7 Uhr auf.",
+                                translation: "I get up at 7 o'clock."
+                            },
+                            beistehen: {
+                                meaning: "to support",
+                                example: "Ich werde dir in dieser Sache beistehen.",
+                                translation: "I will support you in this matter."
+                            },
+                            entstehen: {
+                                meaning: "to arise, to form",
+                                example: "Wie ist dieser Schaden entstanden?",
+                                translation: "How did this damage occur?"
+                            },
+                            verstehen: {
+                                meaning: "to understand (inseparable)",
+                                example: "Verstehst du die Frage?",
+                                translation: "Do you understand the question?"
+                            }
                         }
                     },
                     nehmen: {
                         baseMeaning: "to take",
                         prefixes: {
-                            abnehmen: "to remove, to lose weight",
-                            annehmen: "to accept, to assume",
-                            aufnehmen: "to record, to admit",
-                            mitnehmen: "to take along",
-                            zunehmen: "to increase"
+                            abnehmen: {
+                                meaning: "to remove, to lose weight",
+                                example: "Ich möchte 5 Kilo abnehmen.",
+                                translation: "I want to lose 5 kilos."
+                            },
+                            annehmen: {
+                                meaning: "to accept, to assume",
+                                example: "Nimmst du das Angebot an?",
+                                translation: "Are you accepting the offer?"
+                            },
+                            aufnehmen: {
+                                meaning: "to record, to admit",
+                                example: "Wir nehmen das Gespräch auf.",
+                                translation: "We're recording the conversation."
+                            },
+                            mitnehmen: {
+                                meaning: "to take along",
+                                example: "Nimm bitte den Müll mit.",
+                                translation: "Please take the garbage with you."
+                            },
+                            zunehmen: {
+                                meaning: "to increase",
+                                example: "Das Gewicht nimmt langsam zu.",
+                                translation: "The weight is slowly increasing."
+                            }
                         }
                     },
                     fahren: {
                         baseMeaning: "to drive",
                         prefixes: {
-                            abfahren: "to depart",
-                            anfahren: "to arrive (by vehicle), to hit",
-                            mitfahren: "to ride along",
-                            wegfahren: "to drive away"
+                            abfahren: {
+                                meaning: "to depart",
+                                example: "Der Zug fährt um 15 Uhr ab.",
+                                translation: "The train departs at 3 pm."
+                            },
+                            anfahren: {
+                                meaning: "to arrive (by vehicle), to hit",
+                                example: "Vorsicht! Er fährt die Kurve zu schnell an!",
+                                translation: "Careful! He's taking the curve too fast!"
+                            },
+                            mitfahren: {
+                                meaning: "to ride along",
+                                example: "Kann ich mit euch mitfahren?",
+                                translation: "Can I ride along with you?"
+                            },
+                            wegfahren: {
+                                meaning: "to drive away",
+                                example: "Wann fährst du weg?",
+                                translation: "When are you driving away?"
+                            }
                         }
                     },
                     gehen: {
                         baseMeaning: "to go",
                         prefixes: {
-                            angehen: "to concern, to approach",
-                            ausgehen: "to go out",
-                            mitgehen: "to go along",
-                            zurückgehen: "to go back"
+                            angehen: {
+                                meaning: "to concern, to approach",
+                                example: "Das geht mich nichts an.",
+                                translation: "That doesn't concern me."
+                            },
+                            ausgehen: {
+                                meaning: "to go out",
+                                example: "Wir gehen heute Abend aus.",
+                                translation: "We're going out tonight."
+                            },
+                            mitgehen: {
+                                meaning: "to go along",
+                                example: "Kann ich mit dir mitgehen?",
+                                translation: "Can I go along with you?"
+                            },
+                            zurückgehen: {
+                                meaning: "to go back",
+                                example: "Wir müssen nochmal zurückgehen.",
+                                translation: "We have to go back again."
+                            }
                         }
                     },
                     kommen: {
                         baseMeaning: "to come",
                         prefixes: {
-                            ankommen: "to arrive",
-                            mitkommen: "to come along",
-                            zurückkommen: "to come back"
+                            ankommen: {
+                                meaning: "to arrive",
+                                example: "Wann kommst du an?",
+                                translation: "When do you arrive?"
+                            },
+                            mitkommen: {
+                                meaning: "to come along",
+                                example: "Möchtest du mitkommen?",
+                                translation: "Would you like to come along?"
+                            },
+                            zurückkommen: {
+                                meaning: "to come back",
+                                example: "Ich komme gleich zurück.",
+                                translation: "I'll come back soon."
+                            }
                         }
                     },
                     halten: {
                         baseMeaning: "to hold",
                         prefixes: {
-                            anhalten: "to stop",
-                            aufhalten: "to delay",
-                            behalten: "to keep (inseparable)"
+                            anhalten: {
+                                meaning: "to stop",
+                                example: "Der Bus hält hier an.",
+                                translation: "The bus stops here."
+                            },
+                            aufhalten: {
+                                meaning: "to delay",
+                                example: "Das wird uns nicht lange aufhalten.",
+                                translation: "That won't delay us for long."
+                            },
+                            behalten: {
+                                meaning: "to keep (inseparable)",
+                                example: "Du kannst das Buch behalten.",
+                                translation: "You can keep the book."
+                            }
                         }
                     },
                     schreiben: {
                         baseMeaning: "to write",
                         prefixes: {
-                            abschreiben: "to copy",
-                            aufschreiben: "to write down",
-                            unterschreiben: "to sign"
+                            abschreiben: {
+                                meaning: "to copy",
+                                example: "Er hat den Aufsatz abgeschrieben.",
+                                translation: "He copied the essay."
+                            },
+                            aufschreiben: {
+                                meaning: "to write down",
+                                example: "Schreib dir die Adresse auf.",
+                                translation: "Write down the address."
+                            },
+                            unterschreiben: {
+                                meaning: "to sign",
+                                example: "Sie müssen hier unterschreiben.",
+                                translation: "You need to sign here."
+                            }
                         }
                     },
                     sehen: {
                         baseMeaning: "to see",
                         prefixes: {
-                            ansehen: "to look at",
-                            aussehen: "to appear/look like",
-                            fernsehen: "to watch TV"
+                            ansehen: {
+                                meaning: "to look at",
+                                example: "Sieh dir das Bild genau an.",
+                                translation: "Look at the picture carefully."
+                            },
+                            aussehen: {
+                                meaning: "to appear/look like",
+                                example: "Du siehst heute müde aus.",
+                                translation: "You look tired today."
+                            },
+                            fernsehen: {
+                                meaning: "to watch TV",
+                                example: "Wir sehen jeden Abend fern.",
+                                translation: "We watch TV every evening."
+                            }
                         }
                     },
                     rufen: {
                         baseMeaning: "to call",
                         prefixes: {
-                            anrufen: "to call (by phone)",
-                            aufrufen: "to call upon"
+                            anrufen: {
+                                meaning: "to call (by phone)",
+                                example: "Ich rufe dich später an.",
+                                translation: "I'll call you later."
+                            },
+                            aufrufen: {
+                                meaning: "to call upon",
+                                example: "Der Lehrer ruft die Schüler auf.",
+                                translation: "The teacher calls upon the students."
+                            }
                         }
                     }
                 }
@@ -373,87 +549,231 @@
                     machen: {
                         baseMeaning: "machen - tun, erstellen",
                         prefixes: {
-                            abmachen: "entfernen, vereinbaren",
-                            anmachen: "einschalten (Gerät)",
-                            aufmachen: "öffnen",
-                            ausmachen: "ausschalten, wichtig sein",
-                            zumachen: "schließen"
+                            abmachen: {
+                                meaning: "entfernen, vereinbaren",
+                                example: "Kannst du das Bild abmachen?",
+                                translation: "Can you remove the picture?"
+                            },
+                            anmachen: {
+                                meaning: "einschalten (Gerät)",
+                                example: "Mach bitte das Licht an.",
+                                translation: "Please turn on the light."
+                            },
+                            aufmachen: {
+                                meaning: "öffnen",
+                                example: "Ich mache das Fenster auf.",
+                                translation: "I'm opening the window."
+                            },
+                            ausmachen: {
+                                meaning: "ausschalten, wichtig sein",
+                                example: "Mach den Fernseher aus, bitte.",
+                                translation: "Turn off the TV, please."
+                            },
+                            zumachen: {
+                                meaning: "schließen",
+                                example: "Mach die Tür zu, es zieht.",
+                                translation: "Close the door, there's a draft."
+                            }
                         }
                     },
                     stehen: {
                         baseMeaning: "stehen - aufrecht sein",
                         prefixes: {
-                            aufstehen: "aufwachen, sich erheben",
-                            beistehen: "unterstützen",
-                            entstehen: "entstehen, sich bilden",
-                            verstehen: "verstehen (nicht trennbar)"
+                            aufstehen: {
+                                meaning: "aufwachen, sich erheben",
+                                example: "Ich stehe um 7 Uhr auf.",
+                                translation: "I get up at 7 o'clock."
+                            },
+                            beistehen: {
+                                meaning: "unterstützen",
+                                example: "Ich werde dir in dieser Sache beistehen.",
+                                translation: "I will support you in this matter."
+                            },
+                            entstehen: {
+                                meaning: "entstehen, sich bilden",
+                                example: "Wie ist dieser Schaden entstanden?",
+                                translation: "How did this damage occur?"
+                            },
+                            verstehen: {
+                                meaning: "verstehen (nicht trennbar)",
+                                example: "Verstehst du die Frage?",
+                                translation: "Do you understand the question?"
+                            }
                         }
                     },
                     nehmen: {
                         baseMeaning: "nehmen - greifen, erhalten",
                         prefixes: {
-                            abnehmen: "entfernen, abnehmen",
-                            annehmen: "akzeptieren, annehmen",
-                            aufnehmen: "aufzeichnen, aufnehmen",
-                            mitnehmen: "mitnehmen",
-                            zunehmen: "zunehmen"
+                            abnehmen: {
+                                meaning: "entfernen, abnehmen",
+                                example: "Ich möchte 5 Kilo abnehmen.",
+                                translation: "I want to lose 5 kilos."
+                            },
+                            annehmen: {
+                                meaning: "akzeptieren, annehmen",
+                                example: "Nimmst du das Angebot an?",
+                                translation: "Are you accepting the offer?"
+                            },
+                            aufnehmen: {
+                                meaning: "aufzeichnen, aufnehmen",
+                                example: "Wir nehmen das Gespräch auf.",
+                                translation: "We're recording the conversation."
+                            },
+                            mitnehmen: {
+                                meaning: "mitnehmen",
+                                example: "Nimm bitte den Müll mit.",
+                                translation: "Please take the garbage with you."
+                            },
+                            zunehmen: {
+                                meaning: "zunehmen",
+                                example: "Das Gewicht nimmt langsam zu.",
+                                translation: "The weight is slowly increasing."
+                            }
                         }
                     },
                     fahren: {
                         baseMeaning: "fahren - sich bewegen (Fahrzeug)",
                         prefixes: {
-                            abfahren: "abfahren",
-                            anfahren: "ankommen (mit Fahrzeug), anfahren",
-                            mitfahren: "mitfahren",
-                            wegfahren: "wegfahren"
+                            abfahren: {
+                                meaning: "abfahren",
+                                example: "Der Zug fährt um 15 Uhr ab.",
+                                translation: "The train departs at 3 pm."
+                            },
+                            anfahren: {
+                                meaning: "ankommen (mit Fahrzeug), anfahren",
+                                example: "Vorsicht! Er fährt die Kurve zu schnell an!",
+                                translation: "Careful! He's taking the curve too fast!"
+                            },
+                            mitfahren: {
+                                meaning: "mitfahren",
+                                example: "Kann ich mit euch mitfahren?",
+                                translation: "Can I ride along with you?"
+                            },
+                            wegfahren: {
+                                meaning: "wegfahren",
+                                example: "Wann fährst du weg?",
+                                translation: "When are you driving away?"
+                            }
                         }
                     },
                     gehen: {
                         baseMeaning: "gehen - sich zu Fuß bewegen",
                         prefixes: {
-                            angehen: "betreffen, angehen",
-                            ausgehen: "ausgehen",
-                            mitgehen: "mitgehen",
-                            zurückgehen: "zurückgehen"
+                            angehen: {
+                                meaning: "betreffen, angehen",
+                                example: "Das geht mich nichts an.",
+                                translation: "That doesn't concern me."
+                            },
+                            ausgehen: {
+                                meaning: "ausgehen",
+                                example: "Wir gehen heute Abend aus.",
+                                translation: "We're going out tonight."
+                            },
+                            mitgehen: {
+                                meaning: "mitgehen",
+                                example: "Kann ich mit dir mitgehen?",
+                                translation: "Can I go along with you?"
+                            },
+                            zurückgehen: {
+                                meaning: "zurückgehen",
+                                example: "Wir müssen nochmal zurückgehen.",
+                                translation: "We have to go back again."
+                            }
                         }
                     },
                     kommen: {
                         baseMeaning: "kommen - ankommen, bewegen zu",
                         prefixes: {
-                            ankommen: "ankommen",
-                            mitkommen: "mitkommen",
-                            zurückkommen: "zurückkommen"
+                            ankommen: {
+                                meaning: "ankommen",
+                                example: "Wann kommst du an?",
+                                translation: "When do you arrive?"
+                            },
+                            mitkommen: {
+                                meaning: "mitkommen",
+                                example: "Möchtest du mitkommen?",
+                                translation: "Would you like to come along?"
+                            },
+                            zurückkommen: {
+                                meaning: "zurückkommen",
+                                example: "Ich komme gleich zurück.",
+                                translation: "I'll come back soon."
+                            }
                         }
                     },
                     halten: {
                         baseMeaning: "halten - festhalten",
                         prefixes: {
-                            anhalten: "anhalten",
-                            aufhalten: "verzögern",
-                            behalten: "behalten (nicht trennbar)"
+                            anhalten: {
+                                meaning: "anhalten",
+                                example: "Der Bus hält hier an.",
+                                translation: "The bus stops here."
+                            },
+                            aufhalten: {
+                                meaning: "verzögern",
+                                example: "Das wird uns nicht lange aufhalten.",
+                                translation: "That won't delay us for long."
+                            },
+                            behalten: {
+                                meaning: "behalten (nicht trennbar)",
+                                example: "Du kannst das Buch behalten.",
+                                translation: "You can keep the book."
+                            }
                         }
                     },
                     schreiben: {
                         baseMeaning: "schreiben - texten",
                         prefixes: {
-                            abschreiben: "abschreiben",
-                            aufschreiben: "aufschreiben",
-                            unterschreiben: "unterschreiben"
+                            abschreiben: {
+                                meaning: "abschreiben",
+                                example: "Er hat den Aufsatz abgeschrieben.",
+                                translation: "He copied the essay."
+                            },
+                            aufschreiben: {
+                                meaning: "aufschreiben",
+                                example: "Schreib dir die Adresse auf.",
+                                translation: "Write down the address."
+                            },
+                            unterschreiben: {
+                                meaning: "unterschreiben",
+                                example: "Sie müssen hier unterschreiben.",
+                                translation: "You need to sign here."
+                            }
                         }
                     },
                     sehen: {
                         baseMeaning: "sehen - visuell wahrnehmen",
                         prefixes: {
-                            ansehen: "ansehen",
-                            aussehen: "aussehen wie",
-                            fernsehen: "fernsehen"
+                            ansehen: {
+                                meaning: "ansehen",
+                                example: "Sieh dir das Bild genau an.",
+                                translation: "Look at the picture carefully."
+                            },
+                            aussehen: {
+                                meaning: "aussehen wie",
+                                example: "Du siehst heute müde aus.",
+                                translation: "You look tired today."
+                            },
+                            fernsehen: {
+                                meaning: "fernsehen",
+                                example: "Wir sehen jeden Abend fern.",
+                                translation: "We watch TV every evening."
+                            }
                         }
                     },
                     rufen: {
                         baseMeaning: "rufen - laut sagen",
                         prefixes: {
-                            anrufen: "anrufen (telefonisch)",
-                            aufrufen: "aufrufen"
+                            anrufen: {
+                                meaning: "anrufen (telefonisch)",
+                                example: "Ich rufe dich später an.",
+                                translation: "I'll call you later."
+                            },
+                            aufrufen: {
+                                meaning: "aufrufen",
+                                example: "Der Lehrer ruft die Schüler auf.",
+                                translation: "The teacher calls upon the students."
+                            }
                         }
                     }
                 }
@@ -517,7 +837,7 @@
             
             prefixesContainer.innerHTML = '';
             
-            for (const [prefixVerb, meaning] of Object.entries(stemData.prefixes)) {
+            for (const [prefixVerb, verbData] of Object.entries(stemData.prefixes)) {
                 const prefixItem = document.createElement('div');
                 prefixItem.className = 'prefix-item';
                 
@@ -527,7 +847,15 @@
                 
                 const meaningDisplay = document.createElement('div');
                 meaningDisplay.className = 'meaning-display';
-                meaningDisplay.textContent = meaning;
+                meaningDisplay.innerHTML = `
+                    <div><strong>${currentLanguage === 'en' ? 'Meaning:' : 'Bedeutung:'}</strong> ${verbData.meaning}</div>
+                    <div class="example">
+                        <div class="example-title">${currentLanguage === 'en' ? 'Example:' : 'Beispiel:'}</div>
+                        <div>${verbData.example}</div>
+                        <div class="example-title">${currentLanguage === 'en' ? 'Translation:' : 'Übersetzung:'}</div>
+                        <div>${verbData.translation}</div>
+                    </div>
+                `;
                 
                 prefixItem.appendChild(prefixWord);
                 prefixItem.appendChild(meaningDisplay);
