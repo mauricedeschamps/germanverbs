@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trennbare Verben - German Separable Verbs</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --primary-color: #4a6fa5;
+            --secondary-color: #3a5a78;
+            --card-bg: #2d2d2d;
+            --button-hover: #5a8fd8;
+            --mode-toggle-bg: #333;
+            --mode-toggle-circle: #f0f0f0;
+        }
+
+        .light-mode {
+            --bg-color: #f5f5f5;
+            --text-color: #333333;
+            --primary-color: #5a8fd8;
+            --secondary-color: #4a6fa5;
+            --card-bg: #ffffff;
+            --button-hover: #3a5a78;
+            --mode-toggle-bg: #ddd;
+            --mode-toggle-circle: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--mode-toggle-bg);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--mode-toggle-circle);
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--mode-toggle-bg);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .mode-label {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .language-switcher {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .language-switcher:hover {
+            background-color: var(--button-hover);
+        }
+
+        .stems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stem-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .stem-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stem-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .stem-meaning {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .prefix-list {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .prefix-item {
+            background-color: var(--card-bg);
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .prefix-word {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .meaning-display {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: var(--secondary-color);
+            border-radius: 5px;
+            color: white;
+        }
+
+        .back-button {
+            display: none;
+            margin-top: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: var(--button-hover);
+        }
+
+        @media (max-width: 600px) {
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .stems-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <div class="header-left">
+                <h1 id="app-title">Trennbare Verben<br>German Separable Verbs</h1>
+                
+                <div class="mode-toggle">
+                    <span class="mode-label" id="mode-label">Dark</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="mode-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <button class="language-switcher" id="language-switcher">DE</button>
+        </header>
+
+        <div id="main-page">
+            <div class="stems-grid" id="stems-container">
+                <!-- Stem cards will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <div id="prefix-page" class="prefix-list">
+            <h2 id="stem-header"></h2>
+            <p id="stem-base-meaning"></p>
+            <div id="prefixes-container"></div>
+            <button class="back-button" id="back-button">Back</button>
+        </div>
+    </div>
+
+    <script>
+        // App data
+        const appData = {
+            en: {
+                title: "Trennbare Verben\nGerman Separable Verbs",
+                modeLabel: {
+                    dark: "Dark",
+                    light: "Light"
+                },
+                backButton: "Back",
+                languageButton: "DE",
+                stems: {
+                    machen: {
+                        baseMeaning: "to make/do",
+                        prefixes: {
+                            abmachen: "to remove, to agree on",
+                            anmachen: "to turn on (device)",
+                            aufmachen: "to open",
+                            ausmachen: "to turn off, to matter",
+                            zumachen: "to close"
+                        }
+                    },
+                    stehen: {
+                        baseMeaning: "to stand",
+                        prefixes: {
+                            aufstehen: "to get up",
+                            beistehen: "to support",
+                            entstehen: "to arise, to form",
+                            verstehen: "to understand (inseparable)"
+                        }
+                    },
+                    nehmen: {
+                        baseMeaning: "to take",
+                        prefixes: {
+                            abnehmen: "to remove, to lose weight",
+                            annehmen: "to accept, to assume",
+                            aufnehmen: "to record, to admit",
+                            mitnehmen: "to take along",
+                            zunehmen: "to increase"
+                        }
+                    },
+                    fahren: {
+                        baseMeaning: "to drive",
+                        prefixes: {
+                            abfahren: "to depart",
+                            anfahren: "to arrive (by vehicle), to hit",
+                            mitfahren: "to ride along",
+                            wegfahren: "to drive away"
+                        }
+                    },
+                    gehen: {
+                        baseMeaning: "to go",
+                        prefixes: {
+                            angehen: "to concern, to approach",
+                            ausgehen: "to go out",
+                            mitgehen: "to go along",
+                            zurückgehen: "to go back"
+                        }
+                    },
+                    kommen: {
+                        baseMeaning: "to come",
+                        prefixes: {
+                            ankommen: "to arrive",
+                            mitkommen: "to come along",
+                            zurückkommen: "to come back"
+                        }
+                    },
+                    halten: {
+                        baseMeaning: "to hold",
+                        prefixes: {
+                            anhalten: "to stop",
+                            aufhalten: "to delay",
+                            behalten: "to keep (inseparable)"
+                        }
+                    },
+                    schreiben: {
+                        baseMeaning: "to write",
+                        prefixes: {
+                            abschreiben: "to copy",
+                            aufschreiben: "to write down",
+                            unterschreiben: "to sign"
+                        }
+                    },
+                    sehen: {
+                        baseMeaning: "to see",
+                        prefixes: {
+                            ansehen: "to look at",
+                            aussehen: "to appear/look like",
+                            fernsehen: "to watch TV"
+                        }
+                    },
+                    rufen: {
+                        baseMeaning: "to call",
+                        prefixes: {
+                            anrufen: "to call (by phone)",
+                            aufrufen: "to call upon"
+                        }
+                    }
+                }
+            },
+            de: {
+                title: "Trennbare Verben\nGerman Separable Verbs",
+                modeLabel: {
+                    dark: "Dunkel",
+                    light: "Hell"
+                },
+                backButton: "Zurück",
+                languageButton: "EN",
+                stems: {
+                    machen: {
+                        baseMeaning: "machen - tun, erstellen",
+                        prefixes: {
+                            abmachen: "entfernen, vereinbaren",
+                            anmachen: "einschalten (Gerät)",
+                            aufmachen: "öffnen",
+                            ausmachen: "ausschalten, wichtig sein",
+                            zumachen: "schließen"
+                        }
+                    },
+                    stehen: {
+                        baseMeaning: "stehen - aufrecht sein",
+                        prefixes: {
+                            aufstehen: "aufwachen, sich erheben",
+                            beistehen: "unterstützen",
+                            entstehen: "entstehen, sich bilden",
+                            verstehen: "verstehen (nicht trennbar)"
+                        }
+                    },
+                    nehmen: {
+                        baseMeaning: "nehmen - greifen, erhalten",
+                        prefixes: {
+                            abnehmen: "entfernen, abnehmen",
+                            annehmen: "akzeptieren, annehmen",
+                            aufnehmen: "aufzeichnen, aufnehmen",
+                            mitnehmen: "mitnehmen",
+                            zunehmen: "zunehmen"
+                        }
+                    },
+                    fahren: {
+                        baseMeaning: "fahren - sich bewegen (Fahrzeug)",
+                        prefixes: {
+                            abfahren: "abfahren",
+                            anfahren: "ankommen (mit Fahrzeug), anfahren",
+                            mitfahren: "mitfahren",
+                            wegfahren: "wegfahren"
+                        }
+                    },
+                    gehen: {
+                        baseMeaning: "gehen - sich zu Fuß bewegen",
+                        prefixes: {
+                            angehen: "betreffen, angehen",
+                            ausgehen: "ausgehen",
+                            mitgehen: "mitgehen",
+                            zurückgehen: "zurückgehen"
+                        }
+                    },
+                    kommen: {
+                        baseMeaning: "kommen - ankommen, bewegen zu",
+                        prefixes: {
+                            ankommen: "ankommen",
+                            mitkommen: "mitkommen",
+                            zurückkommen: "zurückkommen"
+                        }
+                    },
+                    halten: {
+                        baseMeaning: "halten - festhalten",
+                        prefixes: {
+                            anhalten: "anhalten",
+                            aufhalten: "verzögern",
+                            behalten: "behalten (nicht trennbar)"
+                        }
+                    },
+                    schreiben: {
+                        baseMeaning: "schreiben - texten",
+                        prefixes: {
+                            abschreiben: "abschreiben",
+                            aufschreiben: "aufschreiben",
+                            unterschreiben: "unterschreiben"
+                        }
+                    },
+                    sehen: {
+                        baseMeaning: "sehen - visuell wahrnehmen",
+                        prefixes: {
+                            ansehen: "ansehen",
+                            aussehen: "aussehen wie",
+                            fernsehen: "fernsehen"
+                        }
+                    },
+                    rufen: {
+                        baseMeaning: "rufen - laut sagen",
+                        prefixes: {
+                            anrufen: "anrufen (telefonisch)",
+                            aufrufen: "aufrufen"
+                        }
+                    }
+                }
+            }
+        };
+
+        // Current language (default: English)
+        let currentLanguage = 'en';
+        let darkMode = true;
+        
+        // DOM elements
+        const appTitle = document.getElementById('app-title');
+        const modeCheckbox = document.getElementById('mode-checkbox');
+        const modeLabel = document.getElementById('mode-label');
+        const languageSwitcher = document.getElementById('language-switcher');
+        const stemsContainer = document.getElementById('stems-container');
+        const mainPage = document.getElementById('main-page');
+        const prefixPage = document.getElementById('prefix-page');
+        const stemHeader = document.getElementById('stem-header');
+        const stemBaseMeaning = document.getElementById('stem-base-meaning');
+        const prefixesContainer = document.getElementById('prefixes-container');
+        const backButton = document.getElementById('back-button');
+
+        // Initialize the app
+        function initApp() {
+            renderStemCards();
+            updateModeUI();
+            
+            // Event listeners
+            modeCheckbox.addEventListener('change', toggleMode);
+            languageSwitcher.addEventListener('click', toggleLanguage);
+            backButton.addEventListener('click', showMainPage);
+        }
+
+        // Render stem cards
+        function renderStemCards() {
+            stemsContainer.innerHTML = '';
+            const stems = appData[currentLanguage].stems;
+            
+            for (const [stem, data] of Object.entries(stems)) {
+                const card = document.createElement('div');
+                card.className = 'stem-card';
+                card.innerHTML = `
+                    <div class="stem-title">${stem}</div>
+                    <div class="stem-meaning">${data.baseMeaning}</div>
+                `;
+                card.addEventListener('click', () => showPrefixPage(stem));
+                stemsContainer.appendChild(card);
+            }
+        }
+
+        // Show prefix page for a specific stem
+        function showPrefixPage(stem) {
+            mainPage.style.display = 'none';
+            prefixPage.style.display = 'block';
+            backButton.style.display = 'block';
+            
+            const stemData = appData[currentLanguage].stems[stem];
+            stemHeader.textContent = stem;
+            stemBaseMeaning.textContent = stemData.baseMeaning;
+            
+            prefixesContainer.innerHTML = '';
+            
+            for (const [prefixVerb, meaning] of Object.entries(stemData.prefixes)) {
+                const prefixItem = document.createElement('div');
+                prefixItem.className = 'prefix-item';
+                
+                const prefixWord = document.createElement('div');
+                prefixWord.className = 'prefix-word';
+                prefixWord.textContent = prefixVerb;
+                
+                const meaningDisplay = document.createElement('div');
+                meaningDisplay.className = 'meaning-display';
+                meaningDisplay.textContent = meaning;
+                
+                prefixItem.appendChild(prefixWord);
+                prefixItem.appendChild(meaningDisplay);
+                
+                prefixItem.addEventListener('click', () => {
+                    meaningDisplay.style.display = meaningDisplay.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                prefixesContainer.appendChild(prefixItem);
+            }
+        }
+
+        // Show main page
+        function showMainPage() {
+            mainPage.style.display = 'block';
+            prefixPage.style.display = 'none';
+            backButton.style.display = 'none';
+        }
+
+        // Toggle dark/light mode
+        function toggleMode() {
+            darkMode = !darkMode;
+            updateModeUI();
+        }
+
+        // Update mode UI
+        function updateModeUI() {
+            if (darkMode) {
+                document.body.classList.remove('light-mode');
+                modeLabel.textContent = appData[currentLanguage].modeLabel.dark;
+                modeCheckbox.checked = false;
+            } else {
+                document.body.classList.add('light-mode');
+                modeLabel.textContent = appData[currentLanguage].modeLabel.light;
+                modeCheckbox.checked = true;
+            }
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'de' : 'en';
+            updateLanguageUI();
+        }
+
+        // Update all language-specific UI
+        function updateLanguageUI() {
+            appTitle.textContent = appData[currentLanguage].title;
+            languageSwitcher.textContent = appData[currentLanguage].languageButton;
+            backButton.textContent = appData[currentLanguage].backButton;
+            updateModeUI();
+            renderStemCards();
+            
+            // Update the prefix page if it's currently showing
+            if (prefixPage.style.display === 'block') {
+                const currentStem = stemHeader.textContent;
+                showPrefixPage(currentStem);
+            }
+        }
+
+        // Initialize the app when the page loads
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
